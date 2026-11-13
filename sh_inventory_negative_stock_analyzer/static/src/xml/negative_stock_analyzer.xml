@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="sh_inventory_negative_stock_analyzer.Dashboard">
+        <div class="o_action o_nsa_dashboard d-flex flex-column" t-att-class="props.className">
+            <div class="o_nsa_toolbar border-bottom bg-view px-3 py-2">
+                <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+                    <h4 class="mb-0 me-auto">Negative Stock Root Cause Analyzer</h4>
+                    <button class="btn btn-primary" t-on-click="() => this.scan(false)" t-att-disabled="state.scanning">
+                        <i class="fa fa-search me-1"/> Scan Current Negatives
+                    </button>
+                    <button class="btn btn-secondary" t-on-click="() => this.scan(true)" t-att-disabled="state.scanning">
+                        <i class="fa fa-history me-1"/> Scan Historical
+                    </button>
+                    <button class="btn btn-outline-secondary" t-on-click="openIncidentList">
+                        Incidents
+                    </button>
+                </div>
+                <form class="o_nsa_filters row g-2 align-items-end" t-on-submit="onSearchSubmit">
+                    <div class="col-md-2">
+                        <label class="form-label mb-0 small">Company</label>
+                        <select class="form-select form-select-sm" t-model.number="state.filters.company_id" t-on-change="onFilterChange">
+                            <option value="">All</option>
+                            <t t-foreach="state.options.companies" t-as="company" t-key="company.id">
+                                <option t-att-value="company.id" t-out="company.name"/>
+                            </t>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label mb-0 small">Warehouse</label>
+                        <select class="form-select form-select-sm" t-model.number="state.filters.warehouse_id" t-on-change="onFilterChange">
+                            <option value="">All</option>
+                            <t t-foreach="state.options.warehouses" t-as="warehouse" t-key="warehouse.id">
+                                <option t-att-value="warehouse.id" t-out="warehouse.name"/>
+                            </t>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label mb-0 small">Location</label>
+                        <select class="form-select form-select-sm" t-model.number="state.filters.location_id" t-on-change="onFilterChange">
+                            <option value="">All</option>
+                            <t t-foreach="filteredLocations" t-as="location" t-key="location.id">
+                                <option t-att-value="location.id" t-out="location.name"/>
+                            </t>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label mb-0 small">Product Category</label>
+                        <select class="form-select form-select-sm" t-model.number="state.filters.categ_id" t-on-change="onFilterChange">
+                            <option value="">All</option>
+                            <t t-foreach="state.options.categories" t-as="category" t-key="category.id">
+                                <option t-att-value="category.id" t-out="category.name"/>
+                            </t>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label mb-0 small">Root Cause</label>
+                        <select class="form-select form-select-sm" t-model="state.filters.root_cause_type" t-on-change="onFilterChange">
+                            <option value="">All</option>
+                            <t t-foreach="state.options.root_causes" t-as="cause" t-key="cause.id">
+                                <option t-att-value="cause.id" t-out="cause.name"/>
+                            </t>
+                        </select>
+                    </div>
+                    <div class="col-md-1">
+                        <label class="form-label mb-0 small">Status</label>
+                        <select class="form-select form-select-sm" t-model="state.filters.state" t-on-change="onFilterChange">
+                            <option value="">All</option>
+                            <t t-foreach="state.options.states" t-as="item" t-key="item.id">
+                                <option t-att-value="item.id" t-out="item.name"/>
+                            </t>
+                        </select>
+                    </div>
+                    <div class="col-md-1">
+                        <label class="form-label mb-0 small">Scope</label>
+                        <select class="form-select form-select-sm" t-model="state.filters.stock_scope" t-on-change="onFilterChange">
+                            <option value="">All</option>
+                            <option value="current">Current Negative</option>
+                            <option value="historical">Historical Negative</option>
+                        </select>
+                    </div>
+                    <div class="col-md-1">
+                        <label class="form-label mb-0 small">Date From</label>
+                        <input type="date" class="form-control form-control-sm" t-model="state.filters.date_from" t-on-change="onFilterChange"/>
+                    </div>
+                    <div class="col-md-1">
+                        <label class="form-label mb-0 small">Date To</label>
+                        <input type="date" class="form-control form-control-sm" t-model="state.filters.date_to" t-on-change="onFilterChange"/>
+                    </div>
+                    <div class="col-md-12">
+                        <input
+                            type="search"
+                            class="form-control form-control-sm"
+                            placeholder="Search product or internal reference"
+                            t-model="state.filters.product_search"
+                        />
+                    </div>
+                </form>
+            </div>
+
+            <div class="o_nsa_body d-flex">
+                <aside class="o_nsa_sidebar border-end">
+                    <div class="o_nsa_sidebar_title px-3 py-2 border-bottom fw-bold">Products</div>
+                    <div class="o_nsa_sidebar_list">
+                        <t t-if="state.loading">
+                            <div class="p-3 text-muted">Loading...</div>
+                        </t>
+                        <t t-elif="!state.products.length">
+                            <div class="p-3 text-muted">
+                                No negative-stock incidents were found. Click
+                                <strong>Scan Current Negatives</strong> or
+                                <strong>Scan Historical</strong> to analyze stock movement history.
+                            </div>
+                        </t>
+                        <t t-foreach="state.products" t-as="product" t-key="product.id">
+                            <button
+                                type="button"
+                                class="o_nsa_product_card"
+                                t-att-class="{ 'o_nsa_product_card_active': state.selectedSummaryId === product.id }"
+                                t-on-click="() => this.selectProduct(product.id)"
+                            >
+                                <div class="d-flex justify-content-between gap-2">
+                                    <div class="fw-semibold text-truncate" t-out="product.product_name"/>
+                                    <span class="text-nowrap flex-shrink-0" t-att-class="qtyClass(product.current_qty)">
+                                        <t t-out="formatQty(product.current_qty)"/>
+                                        <t t-if="product.is_currently_negative"> 🔴</t>
+                                        <t t-elif="product.status === 'corrected'"> 🟠</t>
+                                    </span>
+                                </div>
+                                <div class="small text-muted text-truncate" t-out="product.location_name"/>
+                                <div class="small d-flex flex-wrap gap-2">
+                                    <span>Lowest: <t t-out="formatQty(product.lowest_qty)"/></span>
+                                    <span>Incidents: <t t-out="product.incident_count"/></span>
+                                </div>
+                                <div class="small d-flex justify-content-between">
+                                    <span t-if="product.last_negative_date">Last: <t t-out="formatDate(product.last_negative_date)"/></span>
+                                    <span class="badge" t-att-class="statusClass(product.status)" t-out="product.status"/>
+                                </div>
+                            </button>
+                        </t>
+                    </div>
+                </aside>
+
+                <section class="o_nsa_analysis p-3">
+                    <t t-if="!state.productAnalysis">
+                        <div class="o_nsa_empty text-muted h-100 d-flex align-items-center justify-content-center">
+                            Select a product to see why inventory went negative.
+                        </div>
+                    </t>
+                    <t t-else="">
+                        <div class="o_nsa_analysis_header mb-3">
+                            <h4 class="mb-1" t-out="state.productAnalysis.product.product_name"/>
+                            <div class="text-muted" t-out="state.productAnalysis.product.location_name"/>
+                        </div>
+
+                        <t t-foreach="state.productAnalysis.locations" t-as="group" t-key="group.summary_id">
+                            <div class="o_nsa_location_group mb-3">
+                                <div class="fw-bold mb-2">
+                                    <t t-out="group.location_name"/>
+                                    <span class="ms-2 small" t-att-class="qtyClass(group.current_qty)">
+                                        Current: <t t-out="formatQty(group.current_qty)"/>
+                                    </span>
+                                </div>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <t t-foreach="group.incidents" t-as="incident" t-key="incident.id">
+                                        <button
+                                            type="button"
+                                            class="btn btn-sm"
+                                            t-att-class="state.selectedIncidentId === incident.id ? 'btn-primary' : 'btn-outline-secondary'"
+                                            t-on-click="() => this.selectIncident(incident.id)"
+                                        >
+                                            <t t-out="incidentLabel(incident)"/>
+                                            <span class="ms-1">
+                                                <t t-out="formatQty(incident.stock_before)"/> → <t t-out="formatQty(incident.stock_after)"/>
+                                            </span>
+                                        </button>
+                                    </t>
+                                </div>
+                            </div>
+                        </t>
+
+                        <t t-if="state.incidentAnalysis">
+                            <div class="row g-3">
+                                <div class="col-xl-5">
+                                    <div class="o_nsa_panel">
+                                        <h5>Root Cause Found</h5>
+                                        <dl class="row mb-0 small">
+                                            <dt class="col-5">Product</dt>
+                                            <dd class="col-7" t-out="state.incidentAnalysis.summary.product"/>
+                                            <dt class="col-5">Location</dt>
+                                            <dd class="col-7" t-out="state.incidentAnalysis.summary.location"/>
+                                            <dt class="col-5">Negative Quantity</dt>
+                                            <dd class="col-7 text-danger" t-out="formatQty(state.incidentAnalysis.summary.negative_qty)"/>
+                                            <dt class="col-5">Stock Before</dt>
+                                            <dd class="col-7" t-out="formatQty(state.incidentAnalysis.summary.stock_before)"/>
+                                            <dt class="col-5">Stock After</dt>
+                                            <dd class="col-7" t-out="formatQty(state.incidentAnalysis.summary.stock_after)"/>
+                                            <dt class="col-5">Movement</dt>
+                                            <dd class="col-7">
+                                                <a href="#" t-on-click.prevent="() => this.openRecord('stock.move', state.incidentAnalysis.summary.trigger_move_id)" t-out="state.incidentAnalysis.summary.trigger_move"/>
+                                            </dd>
+                                            <dt class="col-5">Movement Type</dt>
+                                            <dd class="col-7" t-out="state.incidentAnalysis.summary.movement_type"/>
+                                            <dt class="col-5">Root Cause</dt>
+                                            <dd class="col-7 fw-semibold" t-out="state.incidentAnalysis.summary.root_cause"/>
+                                            <dt class="col-5">Status</dt>
+                                            <dd class="col-7">
+                                                <span class="badge" t-att-class="statusClass(state.incidentAnalysis.summary.state)" t-out="state.incidentAnalysis.summary.state"/>
+                                            </dd>
+                                        </dl>
+                                    </div>
+                                    <div class="o_nsa_panel mt-3">
+                                        <h5>Explanation</h5>
+                                        <p class="mb-0" t-out="state.incidentAnalysis.summary.explanation"/>
+                                    </div>
+                                    <div class="o_nsa_panel mt-3">
+                                        <h5>Related Documents</h5>
+                                        <ul class="list-unstyled mb-0">
+                                            <t t-foreach="state.incidentAnalysis.related_documents" t-as="doc" t-key="doc.res_model + '-' + doc.res_id">
+                                                <li>
+                                                    <span class="text-muted" t-out="doc.label"/>:
+                                                    <a href="#" t-on-click.prevent="() => this.openRecord(doc.res_model, doc.res_id)" t-out="doc.name"/>
+                                                </li>
+                                            </t>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-xl-7">
+                                    <div class="o_nsa_panel">
+                                        <h5>Root Cause Chain</h5>
+                                        <RootCauseChain
+                                            nodes="state.incidentAnalysis.chain"
+                                            onOpenRecord.bind="onOpenChainRecord"
+                                        />
+                                    </div>
+                                    <div class="o_nsa_panel mt-3">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <h5 class="mb-0">Stock Timeline</h5>
+                                            <button class="btn btn-link btn-sm" t-on-click="openFullHistory">
+                                                View Full Stock History
+                                            </button>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table table-sm o_nsa_timeline mb-0">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Date / Time</th>
+                                                        <th>Operation</th>
+                                                        <th>Reference</th>
+                                                        <th class="text-end">Qty</th>
+                                                        <th class="text-end">Balance</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <t t-foreach="state.incidentAnalysis.timeline" t-as="row" t-key="row.move_id">
+                                                        <tr t-att-class="{ 'o_nsa_timeline_trigger': row.is_trigger }">
+                                                            <td t-out="formatDate(row.date)"/>
+                                                            <td t-out="row.operation"/>
+                                                            <td>
+                                                                <a href="#" t-on-click.prevent="() => this.openRecord(row.res_model, row.res_id)" t-out="row.reference"/>
+                                                            </td>
+                                                            <td class="text-end" t-att-class="qtyClass(row.qty)" t-out="formatQty(row.qty)"/>
+                                                            <td class="text-end">
+                                                                <t t-out="formatQty(row.balance)"/>
+                                                                <t t-if="row.is_trigger"> 🔴</t>
+                                                            </td>
+                                                        </tr>
+                                                    </t>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </t>
+                </section>
+            </div>
+        </div>
+    </t>
+</templates>

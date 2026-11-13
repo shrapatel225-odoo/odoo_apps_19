@@ -1,0 +1,251 @@
+<!-- Hero -->
+<section class="container" style="padding: 3rem 0 1rem; font-family: Roboto, 'Helvetica Neue', Arial, sans-serif; color: #374151;">
+    <div class="row justify-content-center">
+        <div class="col-lg-11 text-center">
+            <span style="display: inline-block; background: #f3edf2; color: #714B67; border-radius: 20px; padding: 4px 14px; font-size: 13px; font-weight: 600; letter-spacing: .3px;">ODOO 19 &middot; COMMUNITY &amp; ENTERPRISE &middot; INVENTORY</span>
+            <h1 style="color: #1f2937; font-weight: 700; font-size: 38px; margin: 18px 0 12px;">Inventory Negative Stock Root Cause Analyzer</h1>
+            <p style="font-size: 19px; color: #4b5563; max-width: 820px; margin: 0 auto 10px; line-height: 1.55;">
+                Odoo tells you a product <b>is</b> negative. This module tells you <b style="color: #714B67;">why</b>.
+                It replays the stock movement history per product and location, pinpoints the exact movement that pushed
+                the balance below zero, classifies the root cause and links you straight to the picking and source document.
+            </p>
+        </div>
+    </div>
+    <div class="row justify-content-center" style="margin-top: 28px;">
+        <div class="col-lg-11">
+            <img src="images/nsa_dashboard.png" alt="Negative Stock Root Cause Analyzer dashboard" class="img-fluid" style="border: 1px solid #e5e7eb; border-radius: 10px; box-shadow: 0 12px 32px rgba(17, 24, 39, .12);"/>
+        </div>
+    </div>
+</section>
+
+<!-- Problem / solution -->
+<section class="container" style="padding: 2.5rem 0; font-family: Roboto, 'Helvetica Neue', Arial, sans-serif; color: #374151;">
+    <div class="row g-4 justify-content-center">
+        <div class="col-md-5">
+            <div style="height: 100%; border-radius: 10px; background: #fdf2f2; border-left: 4px solid #d23f3a; padding: 22px 24px;">
+                <h4 style="color: #b42318; font-weight: 700; margin-top: 0;">The problem</h4>
+                <ul style="padding-left: 18px; margin: 0; line-height: 1.8;">
+                    <li>On-hand shows <b>-12</b>, but nobody knows which operation caused it</li>
+                    <li>Users dig through the Moves Analysis line by line</li>
+                    <li>Stock that went negative and was later corrected leaves no trace</li>
+                    <li>The same product goes negative again and again, with no history of why</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div style="height: 100%; border-radius: 10px; background: #effaf5; border-left: 4px solid #1f9d6b; padding: 22px 24px;">
+                <h4 style="color: #127a52; font-weight: 700; margin-top: 0;">The solution</h4>
+                <ul style="padding-left: 18px; margin: 0; line-height: 1.8;">
+                    <li>Finds the exact move where the balance crossed from <b>&ge; 0</b> to <b>&lt; 0</b></li>
+                    <li>Shows stock before/after, quantity, picking and source document</li>
+                    <li>Classifies the root cause and writes an explanation</li>
+                    <li>Keeps a separate incident each time, including ones that were later corrected</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How it works -->
+<section style="background: #f8f6f8; padding: 3rem 0; font-family: Roboto, 'Helvetica Neue', Arial, sans-serif; color: #374151;">
+    <div class="container">
+        <h2 class="text-center" style="color: #1f2937; font-weight: 700; margin-bottom: 8px;">How it works</h2>
+        <p class="text-center" style="color: #6b7280; margin-bottom: 32px;">All analysis runs server-side on standard <code>stock.move</code> data. Nothing is changed in your stock.</p>
+        <div class="row g-3">
+            <div class="col-md-3">
+                <div style="background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 20px; height: 100%;">
+                    <div style="width: 38px; height: 38px; border-radius: 50%; background: #714B67; color: #fff; font-weight: 700; display: flex; align-items: center; justify-content: center; font-size: 17px;">1</div>
+                    <h5 style="color: #1f2937; font-weight: 700; margin: 14px 0 6px;">Scan</h5>
+                    <p style="margin: 0; font-size: 14px; line-height: 1.6;">Click <b>Scan Current Negatives</b> (locations negative right now) or <b>Scan Historical</b> (done moves, so negatives that were already corrected are found too). A daily scheduled scan can keep this up to date for you.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div style="background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 20px; height: 100%;">
+                    <div style="width: 38px; height: 38px; border-radius: 50%; background: #714B67; color: #fff; font-weight: 700; display: flex; align-items: center; justify-content: center; font-size: 17px;">2</div>
+                    <h5 style="color: #1f2937; font-weight: 700; margin: 14px 0 6px;">Replay the balance</h5>
+                    <p style="margin: 0; font-size: 14px; line-height: 1.6;">For each product and internal location, done moves are walked in date order and a running balance is calculated. Each time the balance goes from <b>&ge; 0</b> to <b>&lt; 0</b>, an <b>incident</b> is recorded.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div style="background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 20px; height: 100%;">
+                    <div style="width: 38px; height: 38px; border-radius: 50%; background: #714B67; color: #fff; font-weight: 700; display: flex; align-items: center; justify-content: center; font-size: 17px;">3</div>
+                    <h5 style="color: #1f2937; font-weight: 700; margin: 14px 0 6px;">Classify</h5>
+                    <p style="margin: 0; font-size: 14px; line-height: 1.6;">The triggering move is checked against its picking type, its reservation and forecast, the receipts that follow it and inventory locations. From that it gets a root cause type and a plain-language explanation.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div style="background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 20px; height: 100%;">
+                    <div style="width: 38px; height: 38px; border-radius: 50%; background: #714B67; color: #fff; font-weight: 700; display: flex; align-items: center; justify-content: center; font-size: 17px;">4</div>
+                    <h5 style="color: #1f2937; font-weight: 700; margin: 14px 0 6px;">Track recovery</h5>
+                    <p style="margin: 0; font-size: 14px; line-height: 1.6;">When a later move brings the balance back to &ge; 0, the incident is flagged <b>Corrected</b> with the correction date. If the same product goes negative again later, that becomes a new incident.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Root cause types -->
+<section class="container" style="padding: 3rem 0; font-family: Roboto, 'Helvetica Neue', Arial, sans-serif; color: #374151;">
+    <h2 class="text-center" style="color: #1f2937; font-weight: 700; margin-bottom: 8px;">Root cause classification</h2>
+    <p class="text-center" style="color: #6b7280; margin-bottom: 28px;">The checks run in this order, and the first one that matches sets the root cause.</p>
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <table class="table" style="border: 1px solid #e5e7eb; font-size: 14.5px;">
+                <thead style="background: #714B67; color: #fff;">
+                    <tr><th style="padding: 12px 14px; width: 30%;">Root cause</th><th style="padding: 12px 14px;">Detected when</th><th style="padding: 12px 14px; width: 16%;">Initial status</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td style="padding: 11px 14px;"><b>Inventory Adjustment</b></td><td style="padding: 11px 14px;">The move is an inventory adjustment (from or to an <i>Inventory</i> type location)</td><td style="padding: 11px 14px;"><span style="background: #dc3545; color: #fff; border-radius: 10px; padding: 2px 9px; font-size: 12px;">Active</span></td></tr>
+                    <tr><td style="padding: 11px 14px;"><b>Transfer Issue</b></td><td style="padding: 11px 14px;">An internal transfer moved more out of the location than it held</td><td style="padding: 11px 14px;"><span style="background: #dc3545; color: #fff; border-radius: 10px; padding: 2px 9px; font-size: 12px;">Active</span></td></tr>
+                    <tr><td style="padding: 11px 14px;"><b>Sequence / Timing Issue</b></td><td style="padding: 11px 14px;">Stock went out before a receipt that is posted shortly afterwards, so the delivery was validated too early</td><td style="padding: 11px 14px;"><span style="background: #dc3545; color: #fff; border-radius: 10px; padding: 2px 9px; font-size: 12px;">Active</span></td></tr>
+                    <tr><td style="padding: 11px 14px;"><b>Reservation Issue</b></td><td style="padding: 11px 14px;">The demand was larger than available stock and the forecast showed it was not fully reserved</td><td style="padding: 11px 14px;"><span style="background: #ffac00; color: #1f2937; border-radius: 10px; padding: 2px 9px; font-size: 12px;">Investigating</span></td></tr>
+                    <tr><td style="padding: 11px 14px;"><b>Insufficient Stock</b></td><td style="padding: 11px 14px;">The move consumed more than the balance that was available</td><td style="padding: 11px 14px;"><span style="background: #dc3545; color: #fff; border-radius: 10px; padding: 2px 9px; font-size: 12px;">Active</span></td></tr>
+                    <tr><td style="padding: 11px 14px;"><b>Manual / Unidentified Movement</b></td><td style="padding: 11px 14px;">The move is not linked to any picking</td><td style="padding: 11px 14px;"><span style="background: #6c757d; color: #fff; border-radius: 10px; padding: 2px 9px; font-size: 12px;">Unknown</span></td></tr>
+                    <tr><td style="padding: 11px 14px;"><b>Unknown</b></td><td style="padding: 11px 14px;">Not enough information to be more specific</td><td style="padding: 11px 14px;"><span style="background: #6c757d; color: #fff; border-radius: 10px; padding: 2px 9px; font-size: 12px;">Unknown</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<!-- Feature: product list -->
+<section style="background: #f8f6f8; padding: 3rem 0; font-family: Roboto, 'Helvetica Neue', Arial, sans-serif; color: #374151;">
+    <div class="container">
+        <div class="row align-items-center g-4">
+            <div class="col-md-5">
+                <h3 style="color: #1f2937; font-weight: 700;">Analyzer dashboard</h3>
+                <p style="font-size: 15px; line-height: 1.7;">Go to <b>Inventory &rarr; Reporting &rarr; Negative Stock Analyzer</b>. The left panel lists every product and location that has gone negative at least once:</p>
+                <ul style="font-size: 15px; line-height: 1.8; padding-left: 18px;">
+                    <li>Current quantity, lowest quantity reached and number of incidents</li>
+                    <li>Date it last went negative</li>
+                    <li>&#128308; currently negative &middot; &#128992; went negative before but has since recovered</li>
+                    <li>Filters for company, warehouse, location, product category, root cause, status, scope (current / historical) and date range, plus product search</li>
+                </ul>
+            </div>
+            <div class="col-md-7 text-center">
+                <img src="images/nsa_product_list.png" alt="Product list" class="img-fluid" style="max-height: 620px; border: 1px solid #e5e7eb; border-radius: 10px; box-shadow: 0 8px 24px rgba(17, 24, 39, .10);"/>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Feature: root cause chain -->
+<section class="container" style="padding: 3rem 0; font-family: Roboto, 'Helvetica Neue', Arial, sans-serif; color: #374151;">
+    <div class="row align-items-center g-4">
+        <div class="col-md-7 order-2 order-md-1 text-center">
+            <img src="images/nsa_root_cause_chain.png" alt="Root cause chain" class="img-fluid" style="border: 1px solid #e5e7eb; border-radius: 10px; box-shadow: 0 8px 24px rgba(17, 24, 39, .10);"/>
+        </div>
+        <div class="col-md-5 order-1 order-md-2">
+            <h3 style="color: #1f2937; font-weight: 700;">Clickable root cause chain</h3>
+            <p style="font-size: 15px; line-height: 1.7;">Pick an incident to see how it happened, as a chain of linked documents:</p>
+            <p style="font-size: 15px; line-height: 1.9; background: #f8f6f8; border-radius: 8px; padding: 12px 16px;">
+                Stock Before &rarr; Stock Movement &rarr; Picking &rarr; Source Document &rarr; Related Moves
+            </p>
+            <p style="font-size: 15px; line-height: 1.7;">Every node opens the standard Odoo form. The source document is found automatically when it exists: <b>Sales Order</b>, <b>Purchase Order</b> or <b>Manufacturing Order</b>. Nodes only show when the user has read access to that record.</p>
+            <p style="font-size: 15px; line-height: 1.7;">Next to the chain you get a <b>Root Cause Found</b> summary, a generated <b>Explanation</b> and a <b>Related Documents</b> list.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Feature: timeline -->
+<section style="background: #f8f6f8; padding: 3rem 0; font-family: Roboto, 'Helvetica Neue', Arial, sans-serif; color: #374151;">
+    <div class="container">
+        <div class="row align-items-center g-4">
+            <div class="col-md-5">
+                <h3 style="color: #1f2937; font-weight: 700;">Stock timeline</h3>
+                <p style="font-size: 15px; line-height: 1.7;">See the movements before and after the move that caused the problem, with the running balance after each one. The row that took stock negative is highlighted.</p>
+                <ul style="font-size: 15px; line-height: 1.8; padding-left: 18px;">
+                    <li>The window size is configurable (5 moves before and after by default)</li>
+                    <li>Every reference links to its document</li>
+                    <li><b>View Full Stock History</b> opens the standard move history for that product and location</li>
+                </ul>
+                <p style="font-size: 15px; line-height: 1.7;">If a product goes negative more than once, each time is a separate incident (<i>Incident #001</i>, <i>#002</i>&hellip;), so repeated problems are easy to see.</p>
+            </div>
+            <div class="col-md-7 text-center">
+                <img src="images/nsa_stock_timeline.png" alt="Stock timeline" class="img-fluid" style="border: 1px solid #e5e7eb; border-radius: 10px; box-shadow: 0 8px 24px rgba(17, 24, 39, .10);"/>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Feature: incident list -->
+<section class="container" style="padding: 3rem 0; font-family: Roboto, 'Helvetica Neue', Arial, sans-serif; color: #374151;">
+    <h3 class="text-center" style="color: #1f2937; font-weight: 700;">Negative Stock Incidents report</h3>
+    <p class="text-center" style="font-size: 15px; max-width: 820px; margin: 0 auto 24px; line-height: 1.7;">
+        <b>Inventory &rarr; Reporting &rarr; Negative Stock Incidents</b> lists every incident in a standard list view. You can filter by Active, Corrected, Current Negative, Historical Negative, each root cause or incident date. You can group by product, location, warehouse, company, root cause, status or product category.
+    </p>
+    <img src="images/nsa_incident_list.png" alt="Incident list" class="img-fluid" style="border: 1px solid #e5e7eb; border-radius: 10px; box-shadow: 0 8px 24px rgba(17, 24, 39, .10);"/>
+</section>
+
+<!-- Feature: incident form -->
+<section style="background: #f8f6f8; padding: 3rem 0; font-family: Roboto, 'Helvetica Neue', Arial, sans-serif; color: #374151;">
+    <div class="container">
+        <h3 class="text-center" style="color: #1f2937; font-weight: 700;">Incident detail</h3>
+        <p class="text-center" style="font-size: 15px; max-width: 820px; margin: 0 auto 24px; line-height: 1.7;">
+            Each incident gets a reference (<b>NSA/00001</b>&hellip;) and a read-only form showing the product, location, the move that caused it, quantities, root cause and explanation. Buttons open the <b>Movement</b>, <b>Picking</b>, <b>Source Document</b> or the <b>Full Stock History</b>. A chatter lets your team discuss the incident.
+        </p>
+        <img src="images/nsa_incident_form.png" alt="Incident form" class="img-fluid" style="border: 1px solid #e5e7eb; border-radius: 10px; box-shadow: 0 8px 24px rgba(17, 24, 39, .10);"/>
+    </div>
+</section>
+
+<!-- Settings -->
+<section class="container" style="padding: 3rem 0; font-family: Roboto, 'Helvetica Neue', Arial, sans-serif; color: #374151;">
+    <div class="row align-items-center g-4">
+        <div class="col-md-5">
+            <h3 style="color: #1f2937; font-weight: 700;">Configuration</h3>
+            <p style="font-size: 15px; line-height: 1.7;">Go to <b>Inventory &rarr; Configuration &rarr; Settings &rarr; Negative Stock Analyzer</b>:</p>
+            <ul style="font-size: 15px; line-height: 1.8; padding-left: 18px;">
+                <li><b>Timeline Window</b>: how many moves to show before and after the move that caused the incident</li>
+                <li><b>Automatic Incremental Scan</b>: turns on the daily scheduled action <i>Negative Stock Analyzer: Incremental Scan</i>, which refreshes current negatives and recent movement history</li>
+            </ul>
+        </div>
+        <div class="col-md-7 text-center">
+            <img src="images/nsa_settings.png" alt="Settings" class="img-fluid" style="border: 1px solid #e5e7eb; border-radius: 10px; box-shadow: 0 8px 24px rgba(17, 24, 39, .10);"/>
+        </div>
+    </div>
+</section>
+
+<!-- Safe by design + security -->
+<section style="background: #714B67; padding: 3rem 0; font-family: Roboto, 'Helvetica Neue', Arial, sans-serif; color: #fff;">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <h4 style="font-weight: 700; color: #fff;">&#128274; Read-only by design</h4>
+                <p style="font-size: 15px; line-height: 1.7; color: #f3edf2; margin: 0;">The analyzer only investigates. It never validates pickings, changes reservations, modifies quantities or creates inventory adjustments. Users open the linked record and fix it the normal Odoo way.</p>
+            </div>
+            <div class="col-md-4">
+                <h4 style="font-weight: 700; color: #fff;">&#128101; Access rights respected</h4>
+                <p style="font-size: 15px; line-height: 1.7; color: #f3edf2; margin: 0;">Menus are available to <b>Inventory / User</b>. Settings are restricted to <b>Inventory / Administrator</b>. Multi-company record rules apply, and linked documents only show when the user is allowed to read them.</p>
+            </div>
+            <div class="col-md-4">
+                <h4 style="font-weight: 700; color: #fff;">&#9881; Standard Odoo only</h4>
+                <p style="font-size: 15px; line-height: 1.7; color: #f3edf2; margin: 0;">Depends only on <b>Inventory</b> (<code style="color: #fff;">stock</code>) and <code style="color: #fff;">mail</code>. Sales, Purchase and Manufacturing documents are added to the chain automatically when those apps are installed. No changes to standard flows.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Quick start -->
+<section class="container" style="padding: 3rem 0; font-family: Roboto, 'Helvetica Neue', Arial, sans-serif; color: #374151;">
+    <h2 class="text-center" style="color: #1f2937; font-weight: 700; margin-bottom: 24px;">Quick start</h2>
+    <div class="row justify-content-center">
+        <div class="col-lg-9">
+            <ol style="font-size: 15.5px; line-height: 2;">
+                <li>Install <b>Inventory Negative Stock Root Cause Analyzer</b>.</li>
+                <li>Open <b>Inventory &rarr; Reporting &rarr; Negative Stock Analyzer</b>.</li>
+                <li>Click <b>Scan Historical</b> once to analyze your existing move history, then use <b>Scan Current Negatives</b> for quick refreshes.</li>
+                <li>Select a product on the left, then select an incident.</li>
+                <li>Read the root cause, explanation, chain and timeline, then click any document to fix it in standard Odoo.</li>
+            </ol>
+        </div>
+    </div>
+</section>
+
+<!-- Support -->
+<section class="container" style="padding: 0 0 3rem; font-family: Roboto, 'Helvetica Neue', Arial, sans-serif; color: #374151;">
+    <div style="border: 1px solid #e5e7eb; border-radius: 10px; padding: 24px; text-align: center; background: #fafafa;">
+        <h4 style="color: #1f2937; font-weight: 700; margin-top: 0;">Need help or a customization?</h4>
+        <p style="margin: 0; font-size: 15px;">Use the <strong>Support</strong> contact on this app page and we will get back to you.</p>
+        <p style="margin: 8px 0 0; font-size: 13px; color: #6b7280;">Version 19.0.1.0.0 &middot; License OPL-1</p>
+    </div>
+</section>

@@ -1,0 +1,152 @@
+.o_action_manager:has(.o_nsa_dashboard) {
+    overflow: hidden;
+    position: relative;
+}
+
+.o_nsa_dashboard {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    background: var(--o-view-background-color, #fff);
+    min-height: 0;
+    overflow: hidden;
+}
+
+.o_nsa_toolbar {
+    flex: 0 0 auto;
+}
+
+.o_nsa_body {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.o_nsa_sidebar {
+    width: 320px;
+    min-width: 260px;
+    max-width: 40%;
+    height: 100%;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--o-view-background-color, #f8f9fa);
+}
+
+.o_nsa_sidebar_list {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.o_nsa_analysis {
+    flex: 1 1 auto;
+    min-height: 0;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.o_nsa_product_card {
+    display: block;
+    width: 100%;
+    text-align: left;
+    border: 0;
+    border-bottom: 1px solid var(--border-color, #dee2e6);
+    background: transparent;
+    padding: 0.75rem 1rem;
+}
+
+.o_nsa_product_card:hover,
+.o_nsa_product_card_active {
+    background: var(--o-gray-100, #f1f3f5);
+}
+
+.o_nsa_product_card_active {
+    box-shadow: inset 3px 0 0 var(--o-color-primary, #714b67);
+}
+
+.o_nsa_panel {
+    background: var(--o-view-background-color, #fff);
+    border: 1px solid var(--border-color, #dee2e6);
+    border-radius: 0.5rem;
+    padding: 1rem;
+}
+
+.o_nsa_chain {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.o_nsa_chain_node {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    text-align: left;
+    border: 1px solid var(--border-color, #dee2e6);
+    border-radius: 0.5rem;
+    background: var(--o-gray-100, #f8f9fa);
+    padding: 0.75rem 1rem;
+}
+
+.o_nsa_chain_node_clickable {
+    cursor: pointer;
+}
+
+.o_nsa_chain_node_clickable:hover {
+    border-color: var(--o-color-primary, #714b67);
+    background: #fff;
+}
+
+.o_nsa_chain_node:disabled {
+    opacity: 1;
+    cursor: default;
+}
+
+.o_nsa_chain_icon {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: var(--o-color-primary, #714b67);
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+}
+
+.o_nsa_chain_body {
+    display: flex;
+    flex-direction: column;
+}
+
+.o_nsa_chain_title {
+    font-weight: 600;
+}
+
+.o_nsa_chain_subtitle,
+.o_nsa_chain_balance {
+    font-size: 0.85rem;
+    color: var(--o-gray-700, #495057);
+}
+
+.o_nsa_chain_arrow {
+    text-align: center;
+    color: var(--o-gray-500, #6c757d);
+    padding: 0.25rem 0;
+}
+
+.o_nsa_timeline_trigger {
+    background: rgba(220, 53, 69, 0.12);
+    font-weight: 600;
+}
+
+.o_nsa_product_card .badge {
+    flex: 0 0 auto;
+    align-self: flex-start;
+    white-space: nowrap;
+}

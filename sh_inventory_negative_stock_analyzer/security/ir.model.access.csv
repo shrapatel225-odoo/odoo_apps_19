@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_nsa_incident_user,inventory.negative.stock.incident.user,model_inventory_negative_stock_incident,stock.group_stock_user,1,1,1,0
+access_nsa_incident_manager,inventory.negative.stock.incident.manager,model_inventory_negative_stock_incident,stock.group_stock_manager,1,1,1,1
+access_nsa_product_user,inventory.negative.stock.product.user,model_inventory_negative_stock_product,stock.group_stock_user,1,1,1,0
+access_nsa_product_manager,inventory.negative.stock.product.manager,model_inventory_negative_stock_product,stock.group_stock_manager,1,1,1,1

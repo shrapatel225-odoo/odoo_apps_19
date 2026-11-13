@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_negative_stock_analyzer" model="ir.actions.client">
+        <field name="name">Negative Stock Analyzer</field>
+        <field name="tag">sh_inventory_negative_stock_analyzer.dashboard</field>
+        <field name="target">current</field>
+    </record>
+
+    <menuitem
+        id="menu_negative_stock_analyzer"
+        name="Negative Stock Analyzer"
+        parent="stock.menu_warehouse_report"
+        action="action_negative_stock_analyzer"
+        sequence="80"
+        groups="stock.group_stock_user"/>
+
+    <menuitem
+        id="menu_negative_stock_incident"
+        name="Negative Stock Incidents"
+        parent="stock.menu_warehouse_report"
+        action="action_inventory_negative_stock_incident"
+        sequence="81"
+        groups="stock.group_stock_user"/>
+
+    <menuitem
+        id="menu_nsa_configuration"
+        name="Negative Stock Analyzer"
+        parent="stock.menu_stock_config_settings"
+        action="action_nsa_config_settings"
+        sequence="90"
+        groups="stock.group_stock_manager"/>
+</odoo>

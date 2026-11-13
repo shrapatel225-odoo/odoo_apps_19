@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="sh_inventory_negative_stock_analyzer.RootCauseChain">
+        <div class="o_nsa_chain">
+            <t t-if="!nodes.length">
+                <div class="text-muted">No related documents were found for this incident.</div>
+            </t>
+            <t t-foreach="nodes" t-as="node" t-key="node_index">
+                <button
+                    type="button"
+                    class="o_nsa_chain_node"
+                    t-att-class="{ 'o_nsa_chain_node_clickable': isClickable(node) }"
+                    t-on-click="() => this.onNodeClick(node)"
+                    t-att-disabled="!isClickable(node)"
+                >
+                    <span class="o_nsa_chain_icon">
+                        <i class="fa" t-att-class="iconFor(node)"/>
+                    </span>
+                    <span class="o_nsa_chain_body">
+                        <span class="o_nsa_chain_title" t-out="node.title"/>
+                        <span t-if="node.subtitle" class="o_nsa_chain_subtitle" t-out="node.subtitle"/>
+                        <span t-if="node.balance_from !== undefined" class="o_nsa_chain_balance">
+                            Balance: <t t-out="node.balance_from"/> → <t t-out="node.balance_to"/>
+                        </span>
+                    </span>
+                </button>
+                <div t-if="!node_last" class="o_nsa_chain_arrow">
+                    <i class="fa fa-arrow-down"/>
+                </div>
+            </t>
+        </div>
+    </t>
+</templates>

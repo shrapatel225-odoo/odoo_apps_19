@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.nsa</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="stock.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//app[@name='stock']" position="inside">
+                <block title="Negative Stock Analyzer" name="nsa_settings">
+                    <setting id="nsa_timeline_window_setting" help="Number of movements shown before and after the negative-creating move on the timeline.">
+                        <field name="nsa_timeline_window"/>
+                    </setting>
+                    <setting id="nsa_auto_scan_setting" help="Scheduled job that refreshes current negatives and recent stock movement history. The analyzer never changes stock, reservations or pickings.">
+                        <field name="nsa_auto_scan"/>
+                    </setting>
+                </block>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_nsa_config_settings" model="ir.actions.act_window">
+        <field name="name">Negative Stock Analyzer</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">current</field>
+        <field name="view_id" ref="stock.res_config_settings_view_form"/>
+        <field name="context">{'module': 'stock'}</field>
+    </record>
+</odoo>
